@@ -51,7 +51,7 @@ return [
     |
     */
 
-    'root_dir' => 'aetherupload',
+    'root_dir' => 'upload',
 
     /*
     |--------------------------------------------------------------------------
@@ -143,10 +143,10 @@ return [
     |
     */
 
-    'route_preprocess' => '/aetherupload/preprocess', # 上传预处理的路由
-    'route_uploading'  => '/aetherupload/uploading', # 上传文件分块的路由
-    'route_display'    => '/aetherupload/display', # 文件展示的路由
-    'route_download'   => '/aetherupload/download', # 文件下载的路由
+    'route_preprocess' => '/upload/preprocess', # 上传预处理的路由
+    'route_uploading'  => '/upload/uploading', # 上传文件分块的路由
+    'route_display'    => '/upload/display', # 文件展示的路由
+    'route_download'   => '/upload/download', # 文件下载的路由
 
     /*
     |--------------------------------------------------------------------------

@@ -15,7 +15,7 @@ class CsvExporter extends AbstractExporter
     public function export()
     {
         $filename = $this->getTable().'.csv';
-
+        print(chr(0xEF).chr(0xBB).chr(0xBF));
         $headers = [
             'Content-Encoding'    => 'UTF-8',
             'Content-Type'        => 'text/csv;charset=UTF-8',

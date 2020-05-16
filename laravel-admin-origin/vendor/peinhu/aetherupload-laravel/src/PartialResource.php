@@ -32,11 +32,11 @@ class PartialResource
     public function create()
     {
         if ( $this->createGroupSubDir() === false ) {
-            throw new \Exception(trans('aetherupload::messages.create_subfolder_fail'));
+            throw new \Exception(trans('upload::messages.create_subfolder_fail'));
         }
 
         if ( $this->disk->put($this->path, '') === false ) {
-            throw new \Exception(trans('aetherupload::messages.create_resource_fail'));
+            throw new \Exception(trans('upload::messages.create_resource_fail'));
         }
 
     }
@@ -46,7 +46,7 @@ class PartialResource
         $handle = @fopen($chunkRealPath, 'rb');
 
         if ( File::append($this->realPath, $handle) === false ) {
-            throw new \Exception(trans('aetherupload::messages.write_resource_fail'));
+            throw new \Exception(trans('upload::messages.write_resource_fail'));
         }
 
         fclose($handle);
@@ -56,7 +56,7 @@ class PartialResource
     public function delete()
     {
         if ( $this->disk->delete($this->path) === false ) {
-            throw new \Exception(trans('aetherupload::messages.delete_resource_fail'));
+            throw new \Exception(trans('upload::messages.delete_resource_fail'));
         }
 
     }
@@ -68,7 +68,7 @@ class PartialResource
         if ( $this->disk->exists($completePath) === false ) {
 
             if ( $this->disk->move($this->path, $completePath) === false ) {
-                throw new \Exception(trans('aetherupload::messages.rename_resource_fail'));
+                throw new \Exception(trans('upload::messages.rename_resource_fail'));
             }
         }
     }
@@ -78,7 +78,7 @@ class PartialResource
         $maxSize = (int)ConfigMapper::get('resource_maxsize');
 
         if ( (int)$resourceSize === 0 || ((int)$resourceSize > $maxSize && $maxSize !== 0) ) {
-            throw new \Exception(trans('aetherupload::messages.invalid_resource_size'));
+            throw new \Exception(trans('upload::messages.invalid_resource_size'));
         }
 
     }
@@ -88,7 +88,7 @@ class PartialResource
         $extensions = ConfigMapper::get('resource_extensions');
 
         if ( empty($resourceExt) || (empty($extensions) === false && in_array($resourceExt, $extensions) === false) || in_array($resourceExt, ConfigMapper::get('forbidden_extensions')) === true ) {
-            throw new \Exception(trans('aetherupload::messages.invalid_resource_type'));
+            throw new \Exception(trans('upload::messages.invalid_resource_type'));
         }
     }
 

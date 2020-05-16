@@ -12,12 +12,15 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->get('/word', 'HomeController@word');
-    $router->resource('organizations', OrganizationController::class);
-    $router->resource('organization-peoples', OrganizationPeopleController::class);
+
     $router->resource('users', UserController::class);
-    $router->resource('set-classes', SetClassController::class);
-    $router->resource('vaccines', VaccineController::class);
-    $router->resource('bookings', BookingController::class);
+    $router->resource('types', TypeController::class);
+    $router->resource('steps', StepController::class);
+    $router->resource('locations', LocationController::class);
+
+
+
+
 
 
 

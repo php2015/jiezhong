@@ -2,11 +2,13 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Type;
 use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use App\Admin\Actions\Post\ImportPost;
 
 class UserController extends AdminController
 {
@@ -15,7 +17,7 @@ class UserController extends AdminController
      *
      * @var string
      */
-    protected $title = '会员';
+    protected $title = '员工';
 
     /**
      * Make a grid builder.
@@ -28,16 +30,20 @@ class UserController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('name', __('姓名'));
-        //$grid->column('head', __('头像'));
+        $grid->column('type_id', __('部门'))->using(Type::GetKeyVall());
         $grid->column('mobile', __('手机号'));
-        //$grid->column('address', __('地址'));
-        $grid->column('id_number', __('身份证号'));
-        $grid->column('is_organization', __('是否机构人员'));
+        //$grid->column('head_icon', __('头像'))->image();
+        $grid->column('job', __('单位'));
+        $grid->column('description', __('车间'));
         $grid->column('created_at', __('创建时间'));
-        $grid->disableActions();
-        $grid->disableCreateButton();
-        //$grid->column('updated_at', __('Updated at'));
+        $grid->column('updated_at', __('修改时间'));
+        $grid->tools(function ($tools) {
+            $tools->append(new ImportPost());
+        });
+        $grid->filter(function($filter){
+            $filter->in('type_id', "部门")->multipleSelect(Type::GetKeyVall());
 
+        });
         return $grid;
     }
 
@@ -52,15 +58,14 @@ class UserController extends AdminController
         $show = new Show(User::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('name', __('Name'));
-        $show->field('head', __('Head'));
-        $show->field('mobile', __('Mobile'));
-        $show->field('address', __('Address'));
-        $show->field('open_id', __('Open id'));
-        $show->field('id_number', __('Id number'));
-        $show->field('is_organization', __('Is organization'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        $show->field('name', __('姓名'));
+        $show->field('type_id', __('部门'))->using(Type::GetKeyVall());
+        $show->field('mobile', __('手机号'));
+        $show->field('head_icon', __('头像'))->image();
+        $show->field('job', __('单位'));
+        $show->field('description', __('车间'));
+        $show->field('created_at', __('创建时间'));
+        $show->field('updated_at', __('修改时间'));
 
         return $show;
     }
@@ -74,13 +79,20 @@ class UserController extends AdminController
     {
         $form = new Form(new User());
 
-        $form->text('name', __('Name'));
-        $form->text('head', __('Head'));
-        $form->mobile('mobile', __('Mobile'));
-        $form->text('address', __('Address'));
-        $form->text('open_id', __('Open id'));
-        $form->number('id_number', __('Id number'));
-        $form->number('is_organization', __('Is organization'));
+        $form->text('name', __('姓名'));
+
+        $form->saving(function (Form $form) {
+            if ($form->password && $form->model()->password != $form->password) {
+                $form->password= substr(md5($form->password),3,20);
+            }
+        });
+
+        $form->text('mobile', __('手机号'));
+        $form->password('password', __('密码'));
+        $form->select('type_id', __('部门'))->options(Type::GetKeyVall());
+        $form->image('head_icon', __('头像'));
+        $form->text('job', __('单位'));
+        $form->text('description', __('车间'));
 
         return $form;
     }

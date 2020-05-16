@@ -14,7 +14,7 @@ class CleanUpDirectoryCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'aetherupload:clean {days=2 : The number of days from today}';
+    protected $signature = 'upload:clean {days=2 : The number of days from today}';
 
     /**
      * The console command description.
@@ -60,7 +60,7 @@ class CleanUpDirectoryCommand extends Command
 
             $groupDirs = array_map(function ($v) {
                 return $v['group_dir'];
-            }, Config::get('aetherupload.groups'));
+            }, Config::get('upload.groups'));
 
             foreach ( $groupDirs as $groupDir ) {
                 $subDirNames = Storage::directories($rootDir . DIRECTORY_SEPARATOR . $groupDir);

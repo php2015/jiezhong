@@ -27,7 +27,7 @@ class EChartsServiceProvider extends ServiceProvider
             );
         }
 	    Admin::booting(function () {
-		    Admin::js('vendor/laravel-admin-ext/echarts/echarts.min.js');
+		    //Admin::js('vendor/laravel-admin-ext/echarts/echarts.min.js');
 	    });
     }
 }

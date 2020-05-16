@@ -12,9 +12,10 @@ use PhpOffice\PhpWord\PhpWord;
 
 class HomeController extends Controller
 {
+
     public function index(Content $content)
     {
-        return redirect('/admin/teachers');
+        return redirect('/admin/users');
 
         /*
         return $content

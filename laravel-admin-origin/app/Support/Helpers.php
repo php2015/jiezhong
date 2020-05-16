@@ -24,7 +24,7 @@ class Helpers
     public static function getUserIdByToken($token)
     {
         $data = Cache::get($token, []);
-        return $data['member_id'] ?? '';
+        return $data ?? '';
     }
 
     /**
@@ -34,7 +34,7 @@ class Helpers
      * @param string $disk
      * @return bool|string
      */
-    public static function uploadFile($file, $disk = 'public', $is_http = false)
+    public static function uploadFile($file, $disk = 'public', $is_http = false,$is_import=false)
     {
 
         if (!$file) {
@@ -46,6 +46,7 @@ class Helpers
             foreach($file as $key=>$v)
             {
                 $fileName = date('Y_m_d').md5(rand(1,100000));
+
                 $res = Storage::disk($disk)->put($fileName, $v);
                 if (!$res) {
                     return '';
@@ -57,14 +58,30 @@ class Helpers
             $fileName = json_encode($fileArr);
 
         } else {
-            $fileName = date('Y_m_d');
+            //获取文件的扩展名
+            $ext = $file->getClientOriginalExtension();
 
-            $res = Storage::disk($disk)->put($fileName, $file);
+            //获取文件的绝对路径
+            $path = $file->getRealPath();
+
+            //定义文件名
+            $fileName = date('Y_m_d').'/'.md5(rand(1,100000)).'.'.$ext;
+            $res = Storage::disk($disk)->put($fileName, file_get_contents($path));
             if (!$res) {
                 return '';
             }
             if ($is_http) {
-                $fileName = env('APP_URL').'/storage/'.$res;
+                $fileName = env('APP_URL').'/storage/'.$fileName;
+            }else{
+                $fileName = './storage/'.$fileName;
+            }
+
+        }
+        if($is_import){
+            $ext_arr = array('csv','xlsx','xls');
+
+            if(!in_array($ext,$ext_arr)){
+                return "";
             }
         }
 

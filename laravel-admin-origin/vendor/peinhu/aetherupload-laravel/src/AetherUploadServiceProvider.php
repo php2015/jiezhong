@@ -18,20 +18,20 @@ class AetherUploadServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $this->loadViewsFrom(__DIR__ . '/../views', 'aetherupload');
+        $this->loadViewsFrom(__DIR__ . '/../views', 'upload');
 
-        $this->loadTranslationsFrom(__DIR__ . '/../translations', 'aetherupload');
+        $this->loadTranslationsFrom(__DIR__ . '/../translations', 'upload');
 
         $this->publishes([
-            __DIR__ . '/../config/aetherupload.php'         => config_path('aetherupload.php'),
-            __DIR__ . '/../assets/aetherupload.js'          => public_path('vendor/aetherupload/js/aetherupload.js'),
-            __DIR__ . '/../assets/spark-md5.min.js'         => public_path('vendor/aetherupload/js/spark-md5.min.js'),
-            __DIR__ . '/../uploads/aetherupload_file'       => storage_path('app/aetherupload/file'),
-            __DIR__ . '/../uploads/aetherupload_header'     => storage_path('app/aetherupload/_header'),
-            __DIR__ . '/../translations/zh/messages.php'    => base_path('resources/lang/vendor/aetherupload/zh/messages.php'),
-            __DIR__ . '/../translations/en/messages.php'    => base_path('resources/lang/vendor/aetherupload/en/messages.php'),
+            __DIR__ . '/../config/aetherupload.php'         => config_path('upload.php'),
+            __DIR__ . '/../assets/aetherupload.js'          => public_path('vendor/upload/js/upload.js'),
+            __DIR__ . '/../assets/spark-md5.min.js'         => public_path('vendor/upload/js/spark-md5.min.js'),
+            __DIR__ . '/../uploads/aetherupload_file'       => storage_path('app/upload/file'),
+            __DIR__ . '/../uploads/aetherupload_header'     => storage_path('app/upload/_header'),
+            __DIR__ . '/../translations/zh/messages.php'    => base_path('resources/lang/vendor/upload/zh/messages.php'),
+            __DIR__ . '/../translations/en/messages.php'    => base_path('resources/lang/vendor/upload/en/messages.php'),
             __DIR__ . '/../middleware/AetherUploadCORS.php' => app_path('Http/Middleware/AetherUploadCORS.php'),
-        ], 'aetherupload');
+        ], 'upload');
 
         if ( ! $this->app->routesAreCached() ) {
             require __DIR__ . '/../routes/routes.php';

@@ -99,7 +99,9 @@ class LocationController extends AdminController
         $form->number('longitude', __('Longitude'));
         $form->number('latitude', __('Latitude'));
         $form->text('site', __('Site'));
+        //$form->Field->Map("12122","11221","as");
 
+        $form->latlong('1', '2123', '12');
         return $form;
     }
 }

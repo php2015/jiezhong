@@ -41,7 +41,7 @@ class User extends Model
         Cache::forever($token, [
             'user_id' => $user->id,
             'name' => $user->name,
-            'head_icon' => env('APP_URL') . '/storage/' . $user->head_icon,
+            'head_icon' => env('APP_URL')  . $user->head_icon,
             'type_id' => $user->type_id,
             'job' => $user->job,
             'set_num' => $user->set_num,

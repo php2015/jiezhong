@@ -52,7 +52,7 @@ class Helpers
                     return '';
                 }
                 if ($is_http) {
-                    $fileArr[$key] = env('APP_URL').'/storage/'.$res;
+                    $fileArr[$key] = '/storage/'.$res;
                 }
             }
             $fileName = json_encode($fileArr);
@@ -71,7 +71,7 @@ class Helpers
                 return '';
             }
             if ($is_http) {
-                $fileName = env('APP_URL').'/storage/'.$fileName;
+                $fileName = '/storage/'.$fileName;
             }else{
                 $fileName = './storage/'.$fileName;
             }

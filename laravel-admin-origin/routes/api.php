@@ -24,3 +24,5 @@ Route::post('/v1/step/setLocations', '\App\Http\Controllers\Api\V1\StepControlle
 Route::get('/v1/step/getStep', '\App\Http\Controllers\Api\V1\StepController@getStep');
 Route::get('/v1/step/pushApp', '\App\Http\Controllers\Api\V1\StepController@pushApp');
 Route::get('/v1/step/test', '\App\Http\Controllers\Api\V1\StepController@test');
+Route::get('/v1/step/updateVersion', '\App\Http\Controllers\Api\V1\StepController@updateVersion');
+Route::post('/v1/step/setHeadIcon', '\App\Http\Controllers\Api\V1\StepController@setHeadIcon');

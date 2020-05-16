@@ -49,10 +49,15 @@ class StepController extends Controller
     public function getStep(Request $request)
     {
         $token = $request->input('token');
+        $type  = $request->input('type');
         $user = Helpers::getUserIdByToken($token);
         if (empty($user)) return Codes::setCode(Codes::TOKEN_ERROR, 'token验证失败', '', '');
         $sTime = strtotime(date('Y-m-d', time()));
         $eTime = $sTime + 86400;
+        $where = " u.id > 0 ";
+        if($type){
+            $where = " u.type_id = " . $user['type_id'] ;
+        }
         $sql = "SELECT
                     u.id,
                     u.name,
@@ -60,7 +65,7 @@ class StepController extends Controller
                     t.num,
                     u.set_num,
                     ifnull(ss.user_num,'0') as user_num
-                    
+
                 FROM
                     users AS u
                 LEFT JOIN types AS t ON u.type_id = t.id
@@ -75,7 +80,7 @@ class StepController extends Controller
                     AND UNIX_TIMESTAMP(s.created_at) <= $eTime
                 ) AS ss ON u.id = ss.user_id
                 WHERE
-                    u.type_id = " . $user['type_id'] . " order by ss.user_num desc ";
+                    " . $where . " order by ss.user_num desc ";
 
         //echo $sql;die;
         $res = DB::select($sql);
@@ -228,11 +233,50 @@ class StepController extends Controller
 
     }
 
+    /**
+     * TODO set head_icon
+     * @param Request $request
+     * @return array
+     */
+    public function setHeadIcon(Request $request)
+    {
+        $token = $request->input('token');
+        $userInfo = Helpers::getUserIdByToken($token);
+        if (empty($userInfo)) return Codes::setCode(Codes::TOKEN_ERROR, 'token验证失败', '', '');
+        $user = User::where(['id'=>$userInfo['user_id']])->first();
+        $user_icon = Helpers::uploadFile($request->file('head_icon'), 'public', true);
+        $user->head_icon = !empty($user_icon) ? $user_icon : $user->head_icon;
+        if ($user->save()) {
+            return Codes::setCode(Codes::SUCC, '成功');
+        }
+
+        return Codes::setCode(Codes::ERR_QUERY, '');
+    }
+
+
     public function test(Request $request)
     {
 
         Excel::import(new UsersImport(), "../storage/app/public/file/users.csv");
         echo 1;die;
     }
+
+    /**
+     * TODO updateVersion
+     * @param Request $request
+     * @return array
+     */
+    public function updateVersion(Request $request)
+    {
+        $appid= $request->input('appid');
+        $str = '';
+        if($appid == 1){//android
+            $str ='{"code":1,"ver":"'.env('APP_ANDROID').'","path":"'.env('APP_URL').'/apk/jianzhi.apk","logo":"'.env('APP_URL').'/apk/icon.png", "desc":"建支android"}';
+        }else if($appid == 2){//ios
+            $str ='{"code":1,"ver":"'.env('APP_IOS').'","path":"'.env('APP_URL').'/apk/文件名","logo":"'.env('APP_URL').'/apk/icon.png", "desc":"建支ios"}';
+        }
+        return $str;
+    }
+
 
 }

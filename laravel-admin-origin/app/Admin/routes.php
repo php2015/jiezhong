@@ -17,6 +17,8 @@ Route::group([
     $router->resource('types', TypeController::class);
     $router->resource('steps', StepController::class);
     $router->resource('locations', LocationController::class);
+    $router->resource('be-on-duties', beOnDutyController::class);
+
 
 
 

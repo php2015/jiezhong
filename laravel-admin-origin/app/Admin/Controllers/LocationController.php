@@ -8,6 +8,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Models\Type;
+use Encore\Admin\Latlong;
 
 class LocationController extends AdminController
 {
@@ -37,7 +38,7 @@ class LocationController extends AdminController
             ->orderBy('time', 'desc');
         $grid->column('id', __('Id'));
         $grid->column('name', __('姓名'));
-        $grid->column('title', __('部门'));
+        $grid->column('title', __('工种'));
         $grid->column('longitude', __('经度'));
         $grid->column('latitude', __('纬度'));
 
@@ -54,7 +55,7 @@ class LocationController extends AdminController
             $filter->like('name','姓名');
             //$filter->date( 'steps.created_at','时间');
             $filter->between('time','时间')->datetime();
-            $filter->equal('type_id','部门')->select(Type::GetKeyVall());
+            $filter->equal('type_id','工种')->select(Type::GetKeyVall());
 
 
 
@@ -88,7 +89,7 @@ class LocationController extends AdminController
 
     /**
      * Make a form builder.
-     *
+     *`
      * @return Form
      */
     protected function form()
@@ -99,9 +100,7 @@ class LocationController extends AdminController
         $form->number('longitude', __('Longitude'));
         $form->number('latitude', __('Latitude'));
         $form->text('site', __('Site'));
-        //$form->Field->Map("12122","11221","as");
 
-        $form->latlong('1', '2123', '12');
         return $form;
     }
 }

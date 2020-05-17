@@ -12,6 +12,7 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('admin.home');
     $router->get('/word', 'HomeController@word');
+    $router->get('/map', 'HomeController@map');
 
     $router->resource('users', UserController::class);
     $router->resource('types', TypeController::class);

@@ -9,6 +9,9 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -97,6 +100,46 @@ class HomeController extends Controller
         $writer = IOFactory::createWriter($word, 'Word2007');
         $writer->save('hessl.docx');
         return response()->download('hessl.docx');
+
+    }
+
+    public function map(Request $request)
+    {
+        $id = $request->input('type_id');
+        $users = User::select('id','name')->where(['type_id'=>$id])->get();
+        $names = array();
+        $user_ids = '0';
+
+        foreach ($users as $v){
+            $user_ids = $user_ids.','.$v->id;
+            $names[$v->id] = $v->name;
+        }
+        $sql = " SELECT
+                    u.*
+                FROM
+                    ( SELECT * FROM locations where user_id in(".$user_ids.") GROUP BY time DESC ) AS u
+                GROUP BY
+                    u.user_id";
+        $user_step = DB::select($sql);
+
+        $labels = '';
+        $labelStyles ='&labelStyles=';
+        foreach ($user_step as $item){
+            if($item->longitude && $item->latitude){
+                $labels = $labels.$item->longitude.','.$item->latitude.'|';
+                $labelStyles = $labelStyles.$names[$item->user_id].',1,14,0xffffff,0x000fff,1|';
+            }
+        }
+        if($labels){
+            $url = "//api.map.baidu.com/staticimage/v2?ak=ArMGvbtg1YXP8pVSHMNQ1dKGGUuYdfeK&width=1000&height=500&center=".getenv('APP_ADDRESS')."&zoom=12&labels=".$labels.$labelStyles;
+            // $img = "<img style='margin:20px' width='1000' height='500'src='\".$url.\"'/>";
+            //$urls = "//api.map.baidu.com/staticimage/v2?ak=ArMGvbtg1YXP8pVSHMNQ1dKGGUuYdfeK&width=1000&height=500&center=保定&zoom=12&labels=115.583022,38.924700|115.50,38.85|&labelStyles=张三,1,14,0xffffff,0x000fff,1|李四,1,14,0xffffff,0x000fff,1|";
+            $img = "<img style=\"margin:20px\" width=\"1000\" height=\"500\" src=\"".$url."\"/>";
+            //$img = "<img style=\"margin:20px\" width=\"1000\" height=\"500\" src=\"//api.map.baidu.com/staticimage/v2?ak=ArMGvbtg1YXP8pVSHMNQ1dKGGUuYdfeK&width=1000&height=500&center=保定&zoom=12&labels=115.583022,38.924700|115.50,38.85|&labelStyles=张三,1,14,0xffffff,0x000fff,1|李四,1,14,0xffffff,0x000fff,1|\"/>";
+            echo $img;exit;
+        }
+        echo '暂无信息';
+        //return redirect('/admin/types');
 
     }
 }

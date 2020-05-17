@@ -30,7 +30,7 @@ class UserController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('name', __('姓名'));
-        $grid->column('type_id', __('部门'))->using(Type::GetKeyVall());
+        $grid->column('type_id', __('工种'))->using(Type::GetKeyVall());
         $grid->column('mobile', __('手机号'));
         //$grid->column('head_icon', __('头像'))->image();
         $grid->column('job', __('单位'));
@@ -41,7 +41,7 @@ class UserController extends AdminController
             $tools->append(new ImportPost());
         });
         $grid->filter(function($filter){
-            $filter->in('type_id', "部门")->multipleSelect(Type::GetKeyVall());
+            $filter->in('type_id', "工种")->multipleSelect(Type::GetKeyVall());
 
         });
         return $grid;
@@ -59,7 +59,7 @@ class UserController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('name', __('姓名'));
-        $show->field('type_id', __('部门'))->using(Type::GetKeyVall());
+        $show->field('type_id', __('工种'))->using(Type::GetKeyVall());
         $show->field('mobile', __('手机号'));
         $show->field('head_icon', __('头像'))->image();
         $show->field('job', __('单位'));
@@ -89,7 +89,7 @@ class UserController extends AdminController
 
         $form->text('mobile', __('手机号'));
         $form->password('password', __('密码'));
-        $form->select('type_id', __('部门'))->options(Type::GetKeyVall());
+        $form->select('type_id', __('工种'))->options(Type::GetKeyVall());
         $form->image('head_icon', __('头像'));
         $form->text('job', __('单位'));
         $form->text('description', __('车间'));

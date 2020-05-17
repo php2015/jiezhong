@@ -43,7 +43,7 @@ class StepController extends AdminController
          ->orderBy('steps.user_num', 'desc');
         $grid->column('id', __('Id'));
         $grid->column('name', __('姓名'));
-        $grid->column('title', __('部门'));
+        $grid->column('title', __('工种'));
         $grid->column('num', __('部门步数'));
         $grid->column('set_num', __('目标步数'));
 
@@ -59,7 +59,7 @@ class StepController extends AdminController
             // 在这里添加字段过滤器
             //$filter->date( 'steps.created_at','时间');
             $filter->between('time','时间')->datetime();
-            $filter->equal('type_id','部门')->select(Type::GetKeyVall());
+            $filter->equal('type_id','工种')->select(Type::GetKeyVall());
 
 
         });

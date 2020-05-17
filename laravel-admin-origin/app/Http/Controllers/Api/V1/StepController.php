@@ -246,8 +246,9 @@ class StepController extends Controller
         $user = User::where(['id'=>$userInfo['user_id']])->first();
         $user_icon = Helpers::uploadFile($request->file('head_icon'), 'public', true);
         $user->head_icon = !empty($user_icon) ? $user_icon : $user->head_icon;
+        $data['heade_icon'] =  $user->head_icon ;
         if ($user->save()) {
-            return Codes::setCode(Codes::SUCC, '成功');
+            return Codes::setCode(Codes::SUCC, '成功',$data);
         }
 
         return Codes::setCode(Codes::ERR_QUERY, '');
